@@ -1,13 +1,13 @@
 <template>
-  <div class="board" v-if="cellList">
-    <div class="board-row" v-for="row in 3" :key="row">
+  <div class="board">
+    <div class="board-row" v-for="(row,key) in 3" :key="key">
 
       <cell v-for="i in 3"
-            :key="indexByRow(i, row)"
-            :value="cellList[indexByRow(i, row)]"
-            :disabled="!!winner"
-            :winner="!!winner && winner.includes(indexByRow(i, row))"
-            @click="click(i, row)"/>
+            :key="indexInRow(i, row)"
+            :symbol="cellList[indexInRow(i, row)]"
+            :disabled="!winnerCombination"
+            :winner="!!winnerCombination && winnerCombination.includes(indexInRow(i, row))"
+            @clickOnCell="clickOnCell(i, row)"/>
     </div>
   </div>
 </template>
@@ -17,20 +17,23 @@ import Cell from "@/components/Cell";
 
 export default {
   name: 'Board',
+  data() {
+    return {}
+  },
   props: {
     cellList: Array,
-    winner: Array
+    winnerCombination: Array
   },
   components: {
     Cell
   },
   methods: {
-    indexByRow(index, row, max) {
-      max = 3
-      return (row * max + index) - (max + 1)
+    indexInRow(index, row, maxCount) {
+      maxCount = 3
+      return (row * maxCount + index) - (maxCount + 1)
     },
-    click(index, row) {
-      this.$emit( 'click', this.indexByRow( index, row ) )
+    clickOnCell(index, row) {
+      this.$emit( 'clickOnCell', this.indexInRow( index, row ) )
     }
   }
 }
@@ -38,9 +41,9 @@ export default {
 
 <style scoped>
 .board {
-  background-color: #c7c6c6;
-  border: 1rem solid #fff4;
-  box-shadow: 2.5px 5px 25px #0004, 0 1px 6px #0006;
+  background-color: #000000;
+  border: 1px solid transparent;
+  box-shadow: 4px -1px 25px #0004;
   border-radius: 10px;
   width: 65vmin;
   height: 65vmin;

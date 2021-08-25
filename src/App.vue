@@ -16,10 +16,4 @@ export default {
 
 <style>
 
-html, body {
-  height: 100vh;
-}
-body {
-  margin: 0;
-}
 </style>
